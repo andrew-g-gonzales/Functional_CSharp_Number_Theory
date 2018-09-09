@@ -10,8 +10,6 @@ using Xunit;
 namespace Common_Tests
 {
    
-
-
     public class PalindromicTests
     {
         public static IEnumerable<object[]> Palindromes()
@@ -33,9 +31,7 @@ namespace Common_Tests
 
         [Theory]
         [MemberData(nameof(Palindromes))]
-        public void TestIsPalindrome3Digits(int integer)
-        {
-            Assert.True(integer.IsPalindromic());
-        }
+        public void TestIsPalindrome3Digits(int integer)=> Assert.True(integer.IsPalindromic());
+
     }
 }
