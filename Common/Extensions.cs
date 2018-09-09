@@ -44,6 +44,15 @@ namespace Common
                                            .Select(Int64.Parse)
                                            .ToList();
 
+        public static int Reverse(this int num)
+        {
+            int result = 0;
+
+            for (; num != 0; result = result * 10 + num % 10, num /= 10) { }
+
+            return result;
+        }
+
         public static int Length(this int n) => n.Digits().Count();
 
         public static long Length(this long n) => n.Digits().Count();
