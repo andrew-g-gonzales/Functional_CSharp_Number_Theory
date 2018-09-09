@@ -33,13 +33,13 @@ namespace Common
 
 
         public static IReadOnlyList<int> Digits(this int n) =>
-                                        n.ToString(CultureInfo.InvariantCulture)
+                                        n.ToString().ToCharArray()
                                             .Cast<string>()
                                             .Select(Int32.Parse)
                                             .ToList();
 
         public static IReadOnlyList<long> Digits(this long n) =>
-                                       n.ToString(CultureInfo.InvariantCulture)
+                                       n.ToString().ToCharArray()
                                            .Cast<string>()
                                            .Select(Int64.Parse)
                                            .ToList();
@@ -47,6 +47,15 @@ namespace Common
         public static int Reverse(this int num)
         {
             int result = 0;
+          
+            for (; num != 0; result = result * 10 + num % 10, num /= 10) { }
+
+            return result;
+        }
+
+        public static long Reverse(this long num)
+        {
+            long result = 0;
 
             for (; num != 0; result = result * 10 + num % 10, num /= 10) { }
 
@@ -57,9 +66,9 @@ namespace Common
 
         public static long Length(this long n) => n.Digits().Count();
 
-        public static bool IsPalindromic(this int n) => n.Digits().SequenceEqual(n.Digits().Reverse());
+        public static bool IsPalindromic(this int n) => n == n.Reverse();
 
-        public static bool IsPalindromic(this long n) => n.Digits().SequenceEqual(n.Digits().Reverse());
+        public static bool IsPalindromic(this long n) => n == n.Reverse();
 
 
         static IEnumerable<int> Factor(this long n)
