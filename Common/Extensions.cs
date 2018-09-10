@@ -29,6 +29,10 @@ namespace Common
 
         public static bool IsOdd(this long n) => !n.IsEven();
 
+        public static bool IsPrime(this int n) => n > 1 && n.Factor().First() == n;
+
+        public static bool IsPrime(this long n) => n > 1 && n.Factor().First() == n;
+
         public static IEnumerable<int> Divisors(this int n) => Enumerable.Range(1, n).Where(i => n % i == 0);
 
 
