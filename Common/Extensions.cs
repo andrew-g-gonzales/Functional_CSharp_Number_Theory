@@ -33,7 +33,7 @@ namespace Common
 
         public static bool IsPrime(this long n) => n > 1 && n.Factor().First() == n;
 
-        public static IEnumerable<int> Divisors(this int n) => Enumerable.Range(1, n).Where(i => n % i == 0);
+        public static IEnumerable<int> Divisors(this int n) => Enumerable.Range(1, n).TakeWhile(i => n % i == 0);
 
 
         public static IReadOnlyList<int> Digits(this int n) =>
@@ -47,6 +47,24 @@ namespace Common
                                            .Cast<string>()
                                            .Select(Int64.Parse)
                                            .ToList();
+
+        public static bool IsPerfectSquare(this long n) => n.Factor().GroupBy(f => f).All(g => g.Count() % 2 == 0);
+
+        public static bool IsPerfectSquare(this int n) => n.Factor().GroupBy(f => f).All(g => g.Count() % 2 == 0);
+
+        public static bool IsPerfectPower(this int n, int power) => n.Factor().GroupBy(f => f).All(g => g.Count() % power == 0);
+
+        public static bool IsPerfectPower(this long n, int power) => n.Factor().GroupBy(f => f).All(g => g.Count() % power == 0);
+
+        public static bool IsPerfectNumber(this int number) => number.Divisors().Sum() == number;
+      
+        public static IEnumerable<U> SkipLastEnumerable<U>(this IEnumerable<U> models)
+        {
+            using (var e = models.GetEnumerator())
+            {
+                for (; e.MoveNext();) yield return e.Current;
+            }
+        }
 
         public static int Reverse(this int num)
         {
