@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Linq.Enumerable;
+using static System.Int32;
 
 namespace Common
 {
@@ -33,7 +34,7 @@ namespace Common
 
         public static bool IsPrime(this long n) => n > 1 && n.Factor().First() == n;
 
-        public static IEnumerable<int> Divisors(this int n) => Enumerable.Range(1, n).TakeWhile(i => n % i == 0);
+        public static IEnumerable<int> Divisors(this int n) => Range(1, n).TakeWhile(i => n % i == 0);
 
 
         public static IReadOnlyList<int> Digits(this int n) =>
@@ -47,6 +48,29 @@ namespace Common
                                            .Cast<string>()
                                            .Select(Int64.Parse)
                                            .ToList();
+
+        public static int LeastCommonMultiple(this IReadOnlyCollection<int> numbers) =>
+                              numbers.SelectMany(n => n
+                                      .Factor()
+                                      .GroupBy(f => f)
+                                  )
+                                  .GroupBy(g => g.Key)
+                                  .Select(g => g.Key.ToPowerOf(g.Max(g2 => g2.Count())))
+                                  .Product();
+
+        public static int LeastCommonMultiple(this IReadOnlyCollection<long> numbers) =>
+                               numbers.SelectMany(n => n
+                                       .Factor()
+                                       .GroupBy(f => f)
+                                   )
+                                   .GroupBy(g => g.Key)
+                                   .Select(g => g.Key.ToPowerOf(g.Max(g2 => g2.Count())))
+                                   .Product();
+
+        public static int GreatestCommonDivisor(int a, int b) =>
+                                                                a.Divisors().Intersect(b.Divisors())
+                                                                    .DefaultIfEmpty(1)
+                                                                    .Max();
 
         public static bool IsPerfectSquare(this long n) => n.Factor().GroupBy(f => f).All(g => g.Count() % 2 == 0);
 
