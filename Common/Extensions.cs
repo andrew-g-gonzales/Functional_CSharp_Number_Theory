@@ -43,10 +43,10 @@ namespace Common
                                             .Select(Int32.Parse)
                                             .ToList();
 
-        public static IReadOnlyList<long> Digits(this long n) =>
+        public static IReadOnlyList<int> Digits(this long n) =>
                                        n.ToString().ToCharArray()
                                            .Cast<string>()
-                                           .Select(Int64.Parse)
+                                           .Select(Int32.Parse)
                                            .ToList();
 
         public static int LeastCommonMultiple(this IReadOnlyCollection<int> numbers) =>
@@ -108,9 +108,13 @@ namespace Common
             return result;
         }
 
-        public static int Length(this int n) => n.Digits().Count();
+        private static int DigitCount(int num, int digits)=>( (num > 0) ? DigitCount(num / 10, digits + 1) :digits);
 
-        public static long Length(this long n) => n.Digits().Count();
+        private static long DigitCount(long num, long digits) => ((num > 0) ? DigitCount(num / 10, digits + 1) : digits);
+
+        public static int Length(this int n) => Math.Abs(DigitCount(n,0));
+
+        public static long Length(this long n) => Math.Abs(DigitCount(n, 0));
 
         public static bool IsPalindromic(this int n) => n == n.Reverse();
 
