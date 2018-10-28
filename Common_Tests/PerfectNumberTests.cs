@@ -17,10 +17,13 @@ namespace Common_Tests
         [InlineData(28)]
         [InlineData(496)]
         [InlineData(8128)]//Nichomatus discovered 8,128 by the year A.D. 100
-        [InlineData(33550336)]
+        [InlineData(33550336)]      
+        public void IsPerfectIntNumberTest(int number) => True(number.IsPerfectNumber() && number.IsEven());
+
+        [Theory]
         [InlineData(8589869056)]//by Italian mathematician Pietro Cataldi in 1588.
         [InlineData(137438691328)]//by Italian mathematician Pietro Cataldi in 1588.
-        public void IsPerfectNumberTest(int number) => True(number.IsPerfectNumber() && number.IsEven());
+        public void IsPerfectLongNumberTest(long number) => True(number.IsPerfectNumber() && number.IsEven());
 
         /*All known perfect numbers are even; it is not yet known whether an odd prime exists or is even possible. 
          * 
