@@ -10,16 +10,11 @@ namespace Puzzles
 
         public static IEnumerable<int> NumbersEqualToSumOfCubesFiltered(int start, int end, List<int> optimizedDigits) =>
                  Enumerable.Range(start, end)
-                .Where(n => optimizedDigits.Contains(n.Digits().Sum()))
-                .ToDictionary(x => x, x => x.GetDigitsToPowerOf(3).Sum())
-                .Where(e => e.Key == e.Value)
-                .Select(k => k.Key);
+                 .Where(x => (optimizedDigits.Contains(x.Digits().Sum())) && (x == x.GetDigitsToPowerOf(3).Sum()));
 
 
         public static IEnumerable<int> NumbersEqualToSumOfCubes(int start, int end) =>
                 Enumerable.Range(start, end)
-               .ToDictionary(x => x, x => x.GetDigitsToPowerOf(3).Sum())
-               .Where(e => e.Key == e.Value)
-               .Select(k => k.Key);
+               .Where(x => x == x.GetDigitsToPowerOf(3).Sum());
     }
 }
