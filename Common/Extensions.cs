@@ -18,9 +18,9 @@ namespace Common
 
         public static double Product(this IEnumerable<double> source) => source.Aggregate(1D, (x, y) => x * y);
 
-        public static int ToPowerOf(this int @base, int exponent) => Range(1, exponent).Select(_ => @base).Product();
+        public static int ToPowerOf(this int @base, int exponent) => CustomRange.Int32(1, exponent).Select(_ => @base).Product();
 
-        public static long ToPowerOf(this long @base, int exponent) => Range(1, exponent).Select(_ => @base).Product();
+        public static long ToPowerOf(this long @base, int exponent) => CustomRange.Int64(1L, exponent).Select(_L => @base).Product();
 
         public static IEnumerable<int> GetDigitsToPowerOf(this int n, int exponent) => n.Digits().Select(i => i.ToPowerOf(exponent));
 
