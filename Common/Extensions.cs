@@ -22,6 +22,8 @@ namespace Common
 
         public static long ToPowerOf(this long @base, int exponent) => Range(1, exponent).Select(_ => @base).Product();
 
+        public static IEnumerable<int> GetDigitsToPowerOf(this int n, int exponent) => n.Digits().Select(i => i.ToPowerOf(exponent));
+
         public static bool IsEven(this int n) => n % 2 == 0;
 
         public static bool IsOdd(this int n) => !n.IsEven();
@@ -39,14 +41,12 @@ namespace Common
 
         public static IReadOnlyList<int> Digits(this int n) =>
                                         n.ToString().ToCharArray()
-                                            .Cast<string>()
-                                            .Select(Int32.Parse)
-                                            .ToList();
+                                           .Select(c => (int)(c - '0'))
+                                           .ToList();
 
         public static IReadOnlyList<int> Digits(this long n) =>
-                                       n.ToString().ToCharArray()
-                                           .Cast<string>()
-                                           .Select(Int32.Parse)
+                                         n.ToString().ToCharArray()
+                                           .Select(c => (int)(c - '0'))
                                            .ToList();
 
         public static int LeastCommonMultiple(this IReadOnlyCollection<int> numbers) =>
@@ -112,9 +112,10 @@ namespace Common
 
         private static long DigitCount(long num, long digits) => ((num > 0) ? DigitCount(num / 10, digits + 1) : digits);
 
-        public static int Length(this int n) => Math.Abs(DigitCount(n,0));
-
-        public static long Length(this long n) => Math.Abs(DigitCount(n, 0));
+        //public static int Length(this int n) => Math.Abs(DigitCount(n,0));
+        public static int Length(this int n) => n.Length();
+        // public static long Length(this long n) => Math.Abs(DigitCount(n, 0));
+        public static int Length(this long n) => n.Length();
 
         public static bool IsPalindromic(this int n) => n == n.Reverse();
 
