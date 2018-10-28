@@ -28,7 +28,7 @@ namespace Common
 
         public static bool IsOdd(this int n) => !n.IsEven();
 
-        public static bool IsEven(this long n) => n % 2L == 0;
+        public static bool IsEven(this long n) => n % 2L == 0L;
 
         public static bool IsOdd(this long n) => !n.IsEven();
 
@@ -36,17 +36,18 @@ namespace Common
 
         public static bool IsPrime(this long n) => n > 1 && n.Factor().First() == n;
 
-        public static IEnumerable<int> Divisors(this int n) => Range(1, n).TakeWhile(i => n % i == 0);
+        static IEnumerable<int> Divisors(this int n) => Enumerable.Range(1, n).Where(i => n % i == 0);
 
+        public static IEnumerable<long> Divisors(this long n) => CustomRange.Int64(1L, n).Where(iL => n % iL == 0);
 
         public static IReadOnlyList<int> Digits(this int n) =>
-                                        n.ToString().ToCharArray()
+                                        n.ToString()
                                            .Select(c => (int)(c - '0'))
                                           .ToArray();
 
-        public static IReadOnlyList<int> Digits(this long n) =>
-                                         n.ToString().ToCharArray()
-                                           .Select(c => (int)(c - '0'))
+        public static IReadOnlyList<long> Digits(this long n) =>
+                                         n.ToString()
+                                           .Select(c => (long)(c - '0'))
                                            .ToArray();
 
         public static int LeastCommonMultiple(this IReadOnlyCollection<int> numbers) =>
@@ -72,6 +73,11 @@ namespace Common
                                                                     .DefaultIfEmpty(1)
                                                                     .Max();
 
+       public static long GreatestCommonDivisor(long a, long b) =>
+                                                                a.Divisors().Intersect(b.Divisors())
+                                                                    .DefaultIfEmpty(1)
+                                                                    .Max();
+
         public static bool IsPerfectSquare(this long n) => n.Factor().GroupBy(f => f).All(g => g.Count() % 2 == 0);
 
         public static bool IsPerfectSquare(this int n) => n.Factor().GroupBy(f => f).All(g => g.Count() % 2 == 0);
@@ -80,8 +86,64 @@ namespace Common
 
         public static bool IsPerfectPower(this long n, int power) => n.Factor().GroupBy(f => f).All(g => g.Count() % power == 0);
 
-        public static bool IsPerfectNumber(this int number) => number.Divisors().Sum() == number;
-      
+        public static bool IsPerfectNumber(this int value)
+        {
+            var isPerfect = false;
+
+            int maxCheck = Convert.ToInt32(Math.Sqrt(value));
+            int[] possibleDivisors = CustomRange.Int32(1, maxCheck).ToArray();
+            int[] properDivisors = possibleDivisors.Where(d => (value % d == 0)).ToArray();
+            int divisorsSum = properDivisors.Sum();
+
+            if (divisorsSum.IsPrime())
+            {
+                int lastDivisor = properDivisors.Last();
+                isPerfect = (value == (lastDivisor * divisorsSum));
+            }
+
+            return isPerfect;
+        }
+
+        public static bool IsPerfectNumber(this long value)
+        {
+            var isPerfect = false;
+
+            long[] properDivisors = CustomRange.Int64(1, Convert.ToInt64(Math.Sqrt(value))).Where(d => (value % d == 0)).ToArray();
+            long divisorsSum = properDivisors.Sum();
+
+            if (divisorsSum.IsPrime())
+            {
+                long lastDivisor = properDivisors.Last();
+                isPerfect = (value == (lastDivisor * divisorsSum));
+            }
+
+            return isPerfect;
+        }
+
+        public static IEnumerable<int> GetDivisors(this int number)
+        {
+            var searched = Enumerable.Range(1, number)
+                 .Where((x) => number % x == 0)
+                 .Select(x => number / x);
+
+            foreach (var s in searched)
+                yield return s;
+        }
+
+        public static bool Divides(this int potentialFactor, int i)
+        {
+            return i % potentialFactor == 0;
+        }
+
+        public static IEnumerable<int> Factors(this int i)
+        {
+            return from potentialFactor in Enumerable.Range(1, i)
+                   where potentialFactor.Divides(i)
+                   select potentialFactor;
+        }
+
+        //public static bool IsPerfectNumber(this long number) => number.Divisors().Sum().Equals(number);
+
         public static IEnumerable<U> SkipLastEnumerable<U>(this IEnumerable<U> models)
         {
             using (var e = models.GetEnumerator())
@@ -113,9 +175,9 @@ namespace Common
         private static long DigitCount(long num, long digits) => ((num > 0) ? DigitCount(num / 10, digits + 1) : digits);
 
         //public static int Length(this int n) => Math.Abs(DigitCount(n,0));
-        public static int Length(this int n) => n.Length();
+        public static int Length(this int n) => n.Digits().Count;
         // public static long Length(this long n) => Math.Abs(DigitCount(n, 0));
-        public static int Length(this long n) => n.Length();
+        public static int Length(this long n) => n.Digits().Count;
 
         public static bool IsPalindromic(this int n) => n == n.Reverse();
 
