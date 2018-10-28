@@ -8,7 +8,7 @@ namespace Theorem_Test_Proofs
 {
     public class ModularArithmetic
     {
-
+    
       public static IEnumerable<object[]> OddNumbersSquared() =>
       (from i in (CustomRange.Int64(1,10000))
        where i.IsOdd()
@@ -17,7 +17,7 @@ namespace Theorem_Test_Proofs
 
         [Theory]
         [MemberData(nameof(OddNumbersSquared))]
-        public void SquareOfOddNumber1MoewGreaterThanMultipleOf8(long oddNumberSquared)=> Assert.True((oddNumberSquared-1)%8 == 0L);
+        public void SquareOfOddNumber1MoewGreaterThanMultipleOf8(long oddNumberSquared)=> Assert.True((oddNumberSquared-1)%8 == 0);
         
     }
 }
