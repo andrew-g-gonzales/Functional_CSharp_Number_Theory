@@ -21,5 +21,25 @@ namespace Common
                 return value;
             };
         }
+
+        public static Func<A,B, R> Memoize<A,B, R>(this Func<A,B, R> f)
+        {
+            var map = new Dictionary<Tuple<A,B>, R>();
+            return (a,b) =>
+            {
+                var tuple = new Tuple<A, B>(a,b);
+                R value;
+                if (map.TryGetValue(tuple, out value))
+                {
+                    return value;
+                }
+                else
+                {
+                    value = f(a, b);
+                    map.Add(new Tuple<A, B>(a, b), value);
+                    return value;
+                }
+            };
+        }
     }
 }
