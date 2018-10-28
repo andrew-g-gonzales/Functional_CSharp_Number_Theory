@@ -90,9 +90,7 @@ namespace Common
         {
             var isPerfect = false;
 
-            int maxCheck = Convert.ToInt32(Math.Sqrt(value));
-            int[] possibleDivisors = CustomRange.Int32(1, maxCheck).ToArray();
-            int[] properDivisors = possibleDivisors.Where(d => (value % d == 0)).ToArray();
+            var properDivisors = CustomRange.Int32(1, Convert.ToInt32(Math.Sqrt(value))).Where(d => (value % d == 0));
             int divisorsSum = properDivisors.Sum();
 
             if (divisorsSum.IsPrime())
@@ -108,7 +106,7 @@ namespace Common
         {
             var isPerfect = false;
 
-            long[] properDivisors = CustomRange.Int64(1, Convert.ToInt64(Math.Sqrt(value))).Where(d => (value % d == 0)).ToArray();
+            var properDivisors = CustomRange.Int64(1, Convert.ToInt64(Math.Sqrt(value))).Where(d => (value % d == 0));
             long divisorsSum = properDivisors.Sum();
 
             if (divisorsSum.IsPrime())
