@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Prime_Numbers
 {
 
-    https://en.m.wikipedia.org/wiki/Lucas%E2%80%93Lehmer_primality_test
+    //https://en.m.wikipedia.org/wiki/Lucas%E2%80%93Lehmer_primality_test
     public static class LucasLehmerTest
     {
 
