@@ -8,7 +8,7 @@ namespace Common
 {
 
     //https://www.c-sharpcorner.com/UploadFile/b942f9/dealing-with-ranges-of-numbers-in-C-Sharp/
-    internal static class CustomRange
+    public static class CustomRange
     {
         public static IEnumerable<sbyte> SByte(sbyte from, sbyte to, int step)
         {
