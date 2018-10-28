@@ -42,12 +42,12 @@ namespace Common
         public static IReadOnlyList<int> Digits(this int n) =>
                                         n.ToString().ToCharArray()
                                            .Select(c => (int)(c - '0'))
-                                           .ToList();
+                                          .ToArray();
 
         public static IReadOnlyList<int> Digits(this long n) =>
                                          n.ToString().ToCharArray()
                                            .Select(c => (int)(c - '0'))
-                                           .ToList();
+                                           .ToArray();
 
         public static int LeastCommonMultiple(this IReadOnlyCollection<int> numbers) =>
                               numbers.SelectMany(n => n
